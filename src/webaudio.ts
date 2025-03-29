@@ -98,7 +98,7 @@ class WebAudioPlayer extends EventEmitter<WebAudioPlayerEvents> {
     this.bufferNode.connect(this.gainNode)
 
     let currentPos = this.playedDuration * this._playbackRate
-    if (currentPos >= this.duration) {
+    if (currentPos >= this.duration || currentPos < 0) {
       currentPos = 0
       this.playedDuration = 0
     }
@@ -134,13 +134,16 @@ class WebAudioPlayer extends EventEmitter<WebAudioPlayerEvents> {
 
   stopAt(timeSeconds: number) {
     const delay = timeSeconds - this.currentTime
-    this.bufferNode?.stop(this.audioContext.currentTime + delay)
+    const currentBufferNode = this.bufferNode
+    currentBufferNode?.stop(this.audioContext.currentTime + delay)
 
-    this.bufferNode?.addEventListener(
+    currentBufferNode?.addEventListener(
       'ended',
       () => {
-        this.bufferNode = null
-        this.pause()
+        if (currentBufferNode === this.bufferNode) {
+          this.bufferNode = null
+          this.pause()
+        }
       },
       { once: true },
     )

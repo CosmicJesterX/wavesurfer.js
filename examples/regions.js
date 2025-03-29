@@ -93,7 +93,7 @@ document.querySelector('input[type="checkbox"]').onclick = (e) => {
   regions.on('region-clicked', (region, e) => {
     e.stopPropagation() // prevent triggering a click on the waveform
     activeRegion = region
-    region.play()
+    region.play(true)
     region.setOptions({ color: randomColor() })
   })
   // Reset the active region when the user clicks anywhere in the waveform
@@ -126,7 +126,7 @@ ws.once('decode', () => {
     </p>
 
     <p>
-      📖 <a href="https://wavesurfer.xyz/docs/classes/plugins_regions.RegionsPlugin">Regions plugin docs</a>
+      📖 <a href="https://wavesurfer.xyz/docs/classes/plugins_regions.default">Regions plugin docs</a>
     </p>
   </html>
 */
